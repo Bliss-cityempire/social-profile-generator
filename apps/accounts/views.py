@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 
 from apps.profiles.forms import SocialProfileForm
+from apps.pages.models import LandingPage
 from .forms import LandingPageForm, SignUpForm
 
 from .forms import LandingPageForm
