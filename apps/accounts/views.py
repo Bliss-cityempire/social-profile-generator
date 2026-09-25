@@ -5,10 +5,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 
 from apps.profiles.forms import SocialProfileForm
-from apps.pages.models import LandingPage
+from .forms import LandingPageForm, SignUpForm
 
 from .forms import LandingPageForm
-
 
 def login_view(request):
     if request.user.is_authenticated:
@@ -38,6 +37,27 @@ def login_view(request):
         {"error": error},
     )
 
+def signup_view(request):
+    if request.user.is_authenticated:
+        return redirect("dashboard")
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("dashboard")
+    else:
+        form = SignUpForm()
+
+    return render(
+        request,
+        "accounts/signup.html",
+        {
+            "form": form,
+        },
+    )
 
 @login_required
 def logout_view(request):
