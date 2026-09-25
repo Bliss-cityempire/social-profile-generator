@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Manage Profile — Social Profile Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 18px 30px;
+        }
+
+        .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 600;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .field {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font: inherit;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        .current-image {
+            margin-bottom: 20px;
+        }
+
+        .current-image img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        button {
+            border: none;
+            background: #111827;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .cancel {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+
+        <div class="brand">
+            Social Profile Generator
+        </div>
+
+        <a
+            class="back"
+            href="{% url 'dashboard' %}"
+        >
+            ← Dashboard
+        </a>
+
+    </div>
+</header>
+
+<main>
+
+    <div class="card">
+
+        <h1>Manage Profile</h1>
+
+        <form method="post" enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+            <div class="field">
+                <label for="platform">
+                    Platform
+                </label>
+
+                <select id="platform" name="platform">
+
+                    <option
+                        value="tiktok"
+                        {% if profile.platform == "tiktok" %}selected{% endif %}
+                    >
+                        TikTok
+                    </option>
+
+                    <option
+                        value="facebook"
+                        {% if profile.platform == "facebook" %}selected{% endif %}
+                    >
+                        Facebook
+                    </option>
+
+                    <option
+                        value="instagram"
+                        {% if profile.platform == "instagram" %}selected{% endif %}
+                    >
+                        Instagram
+                    </option>
+
+                    <option
+                        value="x"
+                        {% if profile.platform == "x" %}selected{% endif %}
+                    >
+                        X
+                    </option>
+
+                    <option
+                        value="linkedin"
+                        {% if profile.platform == "linkedin" %}selected{% endif %}
+                    >
+                        LinkedIn
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="profile_url">
+                    Profile URL
+                </label>
+
+                <input
+                    id="profile_url"
+                    type="url"
+                    name="profile_url"
+                    value="{{ profile.profile_url }}"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    id="username"
+                    type="text"
+                    name="username"
+                    value="{{ profile.username }}"
+                >
+            </div>
+
+            <div class="field">
+                <label for="display_name">
+                    Display Name
+                </label>
+
+                <input
+                    id="display_name"
+                    type="text"
+                    name="display_name"
+                    value="{{ profile.display_name }}"
+                >
+            </div>
+
+            <div class="field">
+                <label for="bio">
+                    Bio
+                </label>
+
+                <textarea
+                    id="bio"
+                    name="bio"
+                >{{ profile.bio }}</textarea>
+            </div>
+
+            {% if profile.profile_image %}
+                <div class="current-image">
+
+                    <label>
+                        Current Profile Image
+                    </label>
+
+                    <img
+                        src="{{ profile.profile_image.url }}"
+                        alt="{{ profile.display_name }}"
+                    >
+
+                </div>
+            {% endif %}
+
+            <div class="field">
+                <label for="profile_image">
+                    Change Profile Image
+                </label>
+
+                <input
+                    id="profile_image"
+                    type="file"
+                    name="profile_image"
+                    accept="image/*"
+                >
+            </div>
+
+            <div class="actions">
+
+                <button type="submit">
+                    Save Changes
+                </button>
+
+                <a
+                    class="cancel"
+                    href="{% url 'dashboard' %}"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</main>
+
+</body>
+</html>

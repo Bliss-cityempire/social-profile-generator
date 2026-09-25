@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ page.headline|default:profile.display_name }}</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #ffffff;
+            color: #111111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 560px;
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+
+        .placeholder {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: #eeeeee;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: #666666;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .username {
+            margin-top: 8px;
+            color: #777777;
+        }
+
+        .bio {
+            max-width: 440px;
+            margin: 20px auto 0;
+            line-height: 1.6;
+            color: #444444;
+        }
+
+        .headline {
+            margin-top: 32px;
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .description {
+            max-width: 440px;
+            margin: 12px auto 0;
+            color: #555555;
+            line-height: 1.6;
+        }
+
+        .button {
+            display: block;
+            width: 100%;
+            margin-top: 28px;
+            padding: 15px 20px;
+            border: 1px solid #111111;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #111111;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .button:hover {
+            background: #111111;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+
+<a
+    href="{% url 'public-directory' %}"
+    style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 16px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.9);
+        color: #111111;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        z-index: 1000;
+    "
+>
+    Discover Profiles
+</a>
+
+<div class="container">
+
+    {% if profile.profile_image %}
+        <img
+            class="profile-image"
+            src="{{ profile.profile_image.url }}"
+            alt="{{ profile.display_name }}"
+        >
+    {% else %}
+        <div class="placeholder">
+            {{ profile.display_name|first|upper }}
+        </div>
+    {% endif %}
+
+    <h1>{{ profile.display_name }}</h1>
+
+    <div class="username">
+        @{{ profile.username }}
+    </div>
+
+    {% if profile.bio %}
+        <div class="bio">
+            {{ profile.bio }}
+        </div>
+    {% endif %}
+
+    {% if page.headline %}
+        <h2 class="headline">
+            {{ page.headline }}
+        </h2>
+    {% endif %}
+
+    {% if page.description %}
+        <p class="description">
+            {{ page.description }}
+        </p>
+    {% endif %}
+
+    {% if page.button_url %}
+        <a
+            class="button"
+            href="{{ page.button_url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            {{ page.button_text }}
+        </a>
+    {% endif %}
+
+</div>
+
+</body>
+</html>

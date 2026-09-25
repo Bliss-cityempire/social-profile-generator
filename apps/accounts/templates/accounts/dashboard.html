@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Dashboard — Social Profile Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --dark: #111827;
+            --text: #374151;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --background: #f5f7fb;
+            --white: #ffffff;
+            --success: #16a34a;
+            --success-bg: #dcfce7;
+            --warning: #d97706;
+            --warning-bg: #fef3c7;
+        }
+
+        body {
+            margin: 0;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+            background: var(--background);
+            color: var(--dark);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            height: 72px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .username {
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .logout {
+            color: #dc2626;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .logout:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           MAIN
+        ========================== */
+
+        main {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 42px 0 60px;
+        }
+
+        /* =========================
+           HERO
+        ========================== */
+
+        .hero {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 25px;
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            margin: 0 0 8px;
+            font-size: 34px;
+            line-height: 1.15;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 16px;
+        }
+
+        .primary-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 18px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: background 0.15s ease;
+        }
+
+        .primary-button:hover {
+            background: var(--primary-dark);
+        }
+
+        /* =========================
+           STATS
+        ========================== */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 34px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-number {
+            font-size: 30px;
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        /* =========================
+           QUICK ACTIONS
+        ========================== */
+
+        .quick-actions {
+            margin-bottom: 34px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 16px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: -0.3px;
+        }
+
+        .section-heading span {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .action-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            text-decoration: none;
+            transition:
+                transform 0.15s ease,
+                box-shadow 0.15s ease,
+                border-color 0.15s ease;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+            border-color: #bfdbfe;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
+        }
+
+        .action-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .action-title {
+            font-weight: 750;
+            margin-bottom: 5px;
+        }
+
+        .action-description {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* =========================
+           CONTENT GRID
+        ========================== */
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .section {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            padding: 20px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .section-count {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .section-body {
+            padding: 4px 22px 12px;
+        }
+
+        /* =========================
+           PROFILE / PAGE ITEMS
+        ========================== */
+
+        .item {
+            padding: 18px 0;
+            border-bottom: 1px solid #f0f1f3;
+        }
+
+        .item:last-child {
+            border-bottom: none;
+        }
+
+        .item-main {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+        }
+
+        .profile-image {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid var(--border);
+            background: #f3f4f6;
+        }
+
+        .profile-placeholder {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            border-radius: 12px;
+            background: #eff6ff;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 17px;
+        }
+
+        .item-content {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .item-title {
+            font-weight: 750;
+            margin-bottom: 4px;
+            word-break: break-word;
+        }
+
+        .item-meta {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .platform {
+            display: inline-block;
+            margin-top: 7px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            color: #4b5563;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: capitalize;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 7px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-published {
+            color: var(--success);
+            background: var(--success-bg);
+        }
+
+        .status-draft {
+            color: var(--warning);
+            background: var(--warning-bg);
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 13px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .button-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .button-dark {
+            background: var(--dark);
+            color: white;
+        }
+
+        .button-light {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .button:hover {
+            opacity: 0.9;
+        }
+
+        /* =========================
+           EMPTY STATE
+        ========================== */
+
+        .empty {
+            padding: 38px 10px;
+            text-align: center;
+            color: var(--muted);
+        }
+
+        .empty-title {
+            color: var(--dark);
+            font-weight: 750;
+            margin-bottom: 7px;
+        }
+
+        .empty-text {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            header {
+                padding: 0 18px;
+            }
+
+            .username {
+                display: none;
+            }
+
+            main {
+                width: min(100% - 28px, 1180px);
+                padding-top: 28px;
+            }
+
+            .hero {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .primary-button {
+                width: 100%;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                padding: 18px;
+            }
+
+            .section-body {
+                padding-left: 18px;
+                padding-right: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="brand">
+        Social Profile Generator
+    </div>
+
+    <div class="header-right">
+
+        <span class="username">
+            {{ request.user.username }}
+        </span>
+
+        <a
+            class="logout"
+            href="{% url 'logout' %}"
+        >
+            Logout
+        </a>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="hero">
+
+        <div>
+            <h1>
+                Welcome, {{ request.user.username }}
+            </h1>
+
+            <p>
+                Create and manage your social profiles and public landing pages.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'profile-create' %}"
+            class="primary-button"
+        >
+            + Create Profile
+        </a>
+
+    </section>
+
+
+    <!-- =========================
+         STATS
+    ========================== -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Social Profiles
+            </div>
+
+            <div class="stat-number">
+                {{ profile_count }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Landing Pages
+            </div>
+
+            <div class="stat-number">
+                {{ page_count }}
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-label">
+                Published Pages
+            </div>
+
+            <div class="stat-number">
+                {{ published_page_count }}
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         QUICK ACTIONS
+    ========================== -->
+
+    <section class="quick-actions">
+
+        <div class="section-heading">
+
+            <h2>
+                Quick Actions
+            </h2>
+
+            <span>
+                Manage your creator workspace
+            </span>
+
+        </div>
+
+
+        <div class="action-grid">
+
+            <a
+                href="{% url 'profile-create' %}"
+                class="action-card"
+            >
+
+                <div class="action-icon">
+                    +
+                </div>
+
+                <div class="action-title">
+                    Create Profile
+                </div>
+
+                <div class="action-description">
+                    Add a social media profile and automatically create its landing page.
+                </div>
+
+            </a>
+
+
+            <a
+                href="#profiles"
+                class="action-card"
+            >
+
+                <div class="action-icon">
+                    P
+                </div>
+
+                <div class="action-title">
+                    Manage Profiles
+                </div>
+
+                <div class="action-description">
+                    Update your social profile information, bio and profile image.
+                </div>
+
+            </a>
+
+
+            <a
+                href="#pages"
+                class="action-card"
+            >
+
+                <div class="action-icon">
+                    L
+                </div>
+
+                <div class="action-title">
+                    Manage Pages
+                </div>
+
+                <div class="action-description">
+                    Edit landing-page content, templates and publication status.
+                </div>
+
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PROFILES + PAGES
+    ========================== -->
+
+    <div class="content-grid">
+
+        <!-- PROFILES -->
+
+        <section
+            class="section"
+            id="profiles"
+        >
+
+            <div class="section-header">
+
+                <h2>
+                    Your Profiles
+                </h2>
+
+                <span class="section-count">
+                    {{ profile_count }}
+                </span>
+
+            </div>
+
+
+            <div class="section-body">
+
+                {% for profile in profiles %}
+
+                    <div class="item">
+
+                        <div class="item-main">
+
+                            {% if profile.profile_image %}
+
+                                <img
+                                    src="{{ profile.profile_image.url }}"
+                                    alt="{{ profile.display_name }}"
+                                    class="profile-image"
+                                >
+
+                            {% else %}
+
+                                <div class="profile-placeholder">
+                                    {{ profile.display_name|default:profile.username|slice:":1"|upper }}
+                                </div>
+
+                            {% endif %}
+
+
+                            <div class="item-content">
+
+                                <div class="item-title">
+                                    {{ profile.display_name|default:profile.username }}
+                                </div>
+
+                                <div class="item-meta">
+                                    @{{ profile.username }}
+                                </div>
+
+                                <span class="platform">
+                                    {{ profile.platform }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="item-actions">
+
+                            <a
+                                href="{% url 'profile-manage' profile_id=profile.id %}"
+                                class="button button-primary"
+                            >
+                                Manage Profile
+                            </a>
+
+
+                            {% if profile.landing_page %}
+
+                                <a
+                                    href="{% url 'public-landing-page' slug=profile.landing_page.slug %}"
+                                    class="button button-dark"
+                                >
+                                    View Page
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="empty">
+
+                        <div class="empty-title">
+                            No profiles yet
+                        </div>
+
+                        <div class="empty-text">
+                            Create your first social profile to get started.
+                        </div>
+
+                        <a
+                            href="{% url 'profile-create' %}"
+                            class="button button-primary"
+                        >
+                            Create Profile
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+        <!-- LANDING PAGES -->
+
+        <section
+            class="section"
+            id="pages"
+        >
+
+            <div class="section-header">
+
+                <h2>
+                    Your Landing Pages
+                </h2>
+
+                <span class="section-count">
+                    {{ page_count }}
+                </span>
+
+            </div>
+
+
+            <div class="section-body">
+
+                {% for page in pages %}
+
+                    <div class="item">
+
+                        <div class="item-title">
+                            {{ page.headline|default:page.slug }}
+                        </div>
+
+                        <div class="item-meta">
+                            /{{ page.slug }}
+                        </div>
+
+
+                        {% if page.published %}
+
+                            <span class="status status-published">
+                                Published
+                            </span>
+
+                        {% else %}
+
+                            <span class="status status-draft">
+                                Draft
+                            </span>
+
+                        {% endif %}
+
+
+                        <div class="item-meta" style="margin-top: 7px;">
+                            Template: {{ page.get_template_display }}
+                        </div>
+
+
+                        <div class="item-actions">
+
+                            <a
+                                href="{% url 'landing-page-manage' page_id=page.id %}"
+                                class="button button-primary"
+                            >
+                                Manage Page
+                            </a>
+
+
+                            {% if page.published %}
+
+                                <a
+                                    href="{% url 'public-landing-page' slug=page.slug %}"
+                                    class="button button-dark"
+                                >
+                                    View Page
+                                </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                {% empty %}
+
+                    <div class="empty">
+
+                        <div class="empty-title">
+                            No landing pages yet
+                        </div>
+
+                        <div class="empty-text">
+                            Your landing page will be created automatically when you create a profile.
+                        </div>
+
+                        <a
+                            href="{% url 'profile-create' %}"
+                            class="button button-primary"
+                        >
+                            Create Profile
+                        </a>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Discover Profiles — Social Profile Generator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            width: min(1000px, 92%);
+            margin: 40px auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #6b7280;
+        }
+
+        .search {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .search input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .search button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .profile-image {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .placeholder {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .username {
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .platform {
+            display: inline-block;
+            margin-bottom: 12px;
+            padding: 5px 9px;
+            border-radius: 999px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .headline {
+            margin-bottom: 16px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 15px;
+            background: #111827;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6b7280;
+            background: white;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 600px) {
+            .search {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Discover Profiles</h1>
+        <p>
+            Find public social profiles and landing pages.
+        </p>
+    </div>
+
+    <form method="get" class="search">
+        <input
+            type="search"
+            name="q"
+            value="{{ query }}"
+            placeholder="Search by name or username..."
+        >
+
+        <button type="submit">
+            Search
+        </button>
+    </form>
+
+    {% if pages %}
+
+        <div class="grid">
+
+            {% for page in pages %}
+
+                <div class="card">
+
+                    {% if page.profile.profile_image %}
+                        <img
+                            src="{{ page.profile.profile_image.url }}"
+                            alt="{{ page.profile.display_name }}"
+                            class="profile-image"
+                        >
+                    {% else %}
+                        <div class="placeholder">
+                            No Image
+                        </div>
+                    {% endif %}
+
+                    <div class="name">
+                        {{ page.profile.display_name|default:page.profile.username }}
+                    </div>
+
+                    {% if page.profile.username %}
+                        <div class="username">
+                            @{{ page.profile.username }}
+                        </div>
+                    {% endif %}
+
+                    <div class="platform">
+                        {{ page.profile.get_platform_display }}
+                    </div>
+
+                    {% if page.headline %}
+                        <div class="headline">
+                            {{ page.headline }}
+                        </div>
+                    {% endif %}
+
+                    <a
+                        href="{% url 'public-landing-page' slug=page.slug %}"
+                        class="button"
+                    >
+                        View Profile
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+
+            {% if query %}
+                No public profiles found for "{{ query }}".
+            {% else %}
+                No public profiles are available yet.
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

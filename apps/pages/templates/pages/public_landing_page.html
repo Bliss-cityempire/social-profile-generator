@@ -1,0 +1,13 @@
+{% if page.template == "minimal" %}
+
+    {% include "pages/templates/minimal.html" %}
+
+{% elif page.template == "premium" %}
+
+    {% include "pages/templates/premium.html" %}
+
+{% else %}
+
+    {% include "pages/templates/modern.html" %}
+
+{% endif %}
