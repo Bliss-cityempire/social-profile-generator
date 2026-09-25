@@ -7,11 +7,13 @@ from .views import (
     logout_view,
     profile_create_view,
     profile_manage_view,
+    signup_view,
 )
 
 
 urlpatterns = [
     path("login/", login_view, name="login"),
+    path("signup/", signup_view, name="signup"),
     path("logout/", logout_view, name="logout"),
     path("dashboard/", dashboard_view, name="dashboard"),
 
