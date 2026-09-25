@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.shortcuts import redirect
 from django.urls import include, path
 
 from apps.pages.views import (
@@ -9,7 +10,13 @@ from apps.pages.views import (
 )
 
 
+def home_redirect(request):
+    return redirect("login")
+
+
 urlpatterns = [
+    path("", home_redirect, name="home"),
+
     path("admin/", admin.site.urls),
 
     # Authentication / accounts
